@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Activity,
   ChevronRight,
@@ -70,6 +70,29 @@ function SectionHead({ icon: Icon, label }: { icon: typeof Info; label: string }
 function Console() {
   const [mode, setMode] = useState<string>("DEFAULT");
   const [url, setUrl] = useState<string>("");
+  const [isInitiating, setIsInitiating] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+
+  useEffect(() => {
+    if (!isInitiating) return;
+    const id = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) {
+          clearInterval(id);
+          setIsInitiating(false);
+          return 100;
+        }
+        return p + Math.random() * 12;
+      });
+    }, 300);
+    return () => clearInterval(id);
+  }, [isInitiating]);
+
+  const handleInitiate = () => {
+    if (!url.trim()) return;
+    setProgress(0);
+    setIsInitiating(true);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -187,10 +210,29 @@ function Console() {
                   placeholder="https://www.youtube.com/watch?v=..."
                   className="w-full bg-background/60 border border-border px-3 py-2 text-[12px] text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:shadow-[var(--glow-sm)] transition-all"
                 />
-                <button className="pill pill-active mt-3 w-full justify-center">
+                <button
+                  onClick={handleInitiate}
+                  disabled={isInitiating || !url.trim()}
+                  className="pill pill-active mt-3 w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   <Play className="size-3" strokeWidth={1.5} />
-                  [ INITIATE ]
+                  {isInitiating ? `[ RESOLVING ${Math.min(100, Math.round(progress))}% ]` : "[ INITIATE ]"}
                 </button>
+
+                {isInitiating && (
+                  <div className="mt-3">
+                    <div className="h-[3px] w-full bg-panel-tint">
+                      <div
+                        className="h-full bg-primary/70 shadow-[var(--glow-md)] transition-all duration-300"
+                        style={{ width: `${Math.min(100, progress)}%` }}}
+                      />
+                    </div>
+                    <div className="label-xs mt-1.5 flex justify-between text-muted-foreground">
+                      <span>PROBE_STREAMS</span>
+                      <span>{Math.min(100, Math.round(progress))}%</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
 
