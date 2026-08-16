@@ -68,6 +68,7 @@ function SectionHead({ icon: Icon, label }: { icon: typeof Info; label: string }
 
 function Console() {
   const [mode, setMode] = useState<string>("DEFAULT");
+  const [url, setUrl] = useState<string>("");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -173,6 +174,21 @@ function Console() {
 
           {/* SIDEBAR */}
           <aside className="flex flex-col gap-3">
+            <section className="panel">
+              <div className="border-b border-border px-3 py-2">
+                <span className="label-xs text-primary/80">[ TARGET_URL ]</span>
+              </div>
+              <div className="p-3">
+                <input
+                  type="text"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className="w-full bg-background/60 border border-border px-3 py-2 text-[12px] text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:shadow-[var(--glow-sm)] transition-all"
+                />
+              </div>
+            </section>
+
             <section className="panel">
               <div className="border-b border-border px-3 py-2">
                 <span className="label-xs text-primary/80">[ DOWNLOAD_STATS ]</span>
