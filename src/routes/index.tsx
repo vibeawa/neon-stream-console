@@ -94,6 +94,44 @@ function Console() {
     setIsInitiating(true);
   };
 
+  const pct = Math.min(100, Math.round(progress));
+  const filled = Math.floor((pct / 100) * 20);
+  const progressBar = `[${"█".repeat(filled)}${"░".repeat(20 - filled)}] ${pct}%`;
+
+  const terminalLines = isInitiating || pct >= 100
+    ? [
+        { text: "> paste_url --target youtube", dim: true },
+        { text: url, accent: true, flag: true },
+        { text: "", dim: true },
+        ...(isInitiating && pct < 100
+          ? [
+              { text: "[fetch] resolving metadata ......... IN_PROGRESS", dim: true },
+              { text: progressBar, accent: true },
+              { text: "", dim: true },
+              { text: "> _", accent: true },
+            ]
+          : []),
+        ...(pct >= 100
+          ? [
+              { text: "[fetch] resolving metadata ......... OK", dim: true },
+              { text: "", dim: true },
+              { text: "TITLE    : Building a Synthwave Render Pipeline in 40 Minutes" },
+              { text: "CHANNEL  : nullbyte.studio" },
+              { text: "DURATION : 00:41:17" },
+              { text: "UPLOADED : 2026-07-29" },
+              { text: "", dim: true },
+              { text: "[probe] enumerating streams ....... 18 found", dim: true },
+              { text: "best_video : 2160p60 / vp9 / 1.42 GB" },
+              { text: "best_audio : opus 160kbps / 47.3 MB" },
+              { text: "", dim: true },
+              { text: "> _", accent: true },
+            ]
+          : []),
+      ]
+    : BUFFER;
+
+
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto flex min-h-screen max-w-[1500px] flex-col px-5 py-4">
@@ -152,10 +190,10 @@ function Console() {
               </div>
             </div>
 
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-auto min-h-0">
               <div className="grid grid-cols-[46px_1fr]">
                 <div className="border-r border-border bg-panel-tint/40 py-3">
-                  {BUFFER.map((l, i) => (
+                  {terminalLines.map((l, i) => (
                     <div
                       key={i}
                       className="relative flex h-[22px] items-center justify-end pr-2 text-[11px] text-muted-foreground/60"
@@ -171,7 +209,7 @@ function Console() {
                   ))}
                 </div>
                 <div className="py-3 pl-4">
-                  {BUFFER.map((l, i) => (
+                  {terminalLines.map((l, i) => (
                     <div
                       key={i}
                       className={`h-[22px] whitespace-pre text-[12.5px] leading-[22px] ${
