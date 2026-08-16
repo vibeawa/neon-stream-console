@@ -10,6 +10,7 @@ import {
   Gauge,
   Info,
   Lock,
+  Play,
   RefreshCw,
   Settings2,
   SlidersHorizontal,
@@ -186,6 +187,10 @@ function Console() {
                   placeholder="https://www.youtube.com/watch?v=..."
                   className="w-full bg-background/60 border border-border px-3 py-2 text-[12px] text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:shadow-[var(--glow-sm)] transition-all"
                 />
+                <button className="pill pill-active mt-3 w-full justify-center">
+                  <Play className="size-3" strokeWidth={1.5} />
+                  [ INITIATE ]
+                </button>
               </div>
             </section>
 
