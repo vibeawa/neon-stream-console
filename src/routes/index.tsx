@@ -190,10 +190,10 @@ function Console() {
               </div>
             </div>
 
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-auto min-h-0">
               <div className="grid grid-cols-[46px_1fr]">
                 <div className="border-r border-border bg-panel-tint/40 py-3">
-                  {BUFFER.map((l, i) => (
+                  {terminalLines.map((l, i) => (
                     <div
                       key={i}
                       className="relative flex h-[22px] items-center justify-end pr-2 text-[11px] text-muted-foreground/60"
@@ -209,7 +209,7 @@ function Console() {
                   ))}
                 </div>
                 <div className="py-3 pl-4">
-                  {BUFFER.map((l, i) => (
+                  {terminalLines.map((l, i) => (
                     <div
                       key={i}
                       className={`h-[22px] whitespace-pre text-[12.5px] leading-[22px] ${
