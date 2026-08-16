@@ -224,7 +224,7 @@ function Console() {
                     <div className="h-[3px] w-full bg-panel-tint">
                       <div
                         className="h-full bg-primary/70 shadow-[var(--glow-md)] transition-all duration-300"
-                        style={{ width: `${Math.min(100, progress)}%` }}}
+                        style={{ width: `${Math.min(100, progress)}%` }}
                       />
                     </div>
                     <div className="label-xs mt-1.5 flex justify-between text-muted-foreground">
